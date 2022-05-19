@@ -12,5 +12,6 @@ namespace DesignAnalysis.Core.Entities
         public string Tin { get; set; }
         public string IssueDate { get; set; }
         public string IssuedAt { get; set; }
+        public ICollection<Project> Projects { get; set; }
     }
 }

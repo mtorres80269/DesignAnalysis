@@ -13,6 +13,6 @@ namespace DesignAnalysis.Core.Entities
         public string Email { get; set; }
         public string ImageUrl { get; set; }
         public string FileName { get; set; }
-        public Project Project { get; set; }
+        public ICollection<Project> Projects { get; set; }
     }
 }

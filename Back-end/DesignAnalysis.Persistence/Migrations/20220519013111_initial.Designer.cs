@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DesignAnalysis.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220509130623_initial")]
+    [Migration("20220519013111_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,10 +219,6 @@ namespace DesignAnalysis.Persistence.Migrations
                         .HasColumnName("DeletedUnixTime")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("EngineerDetailId")
-                        .HasColumnName("EngineerDetailId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("EngineerDetailsId")
                         .HasColumnName("EngineerDetailsId")
                         .HasColumnType("bigint");
@@ -270,8 +266,8 @@ namespace DesignAnalysis.Persistence.Migrations
                         .IsUnique()
                         .HasName("IxProjectsCompanyId");
 
-                    b.HasIndex("EngineerDetailId")
-                        .HasName("IxProjectsEngineerDetailId");
+                    b.HasIndex("EngineerDetailsId")
+                        .IsUnique();
 
                     b.ToTable("Projects");
                 });
@@ -285,9 +281,10 @@ namespace DesignAnalysis.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("DesignAnalysis.Core.Entities.EngineerDetail", "EngineerDetail")
-                        .WithMany()
-                        .HasForeignKey("EngineerDetailId")
-                        .HasConstraintName("FkProjectsEngineerDetailsEngineerDetailId");
+                        .WithOne("Project")
+                        .HasForeignKey("DesignAnalysis.Core.Entities.Project", "EngineerDetailsId")
+                        .HasConstraintName("FK_Project_EngineerDetail")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -84,8 +84,7 @@ namespace DesignAnalysis.Persistence.Migrations
                     Stage = table.Column<int>(nullable: false),
                     SystemName = table.Column<string>(nullable: true),
                     CompanyId = table.Column<long>(nullable: false),
-                    EngineerDetailsId = table.Column<long>(nullable: false),
-                    EngineerDetailId = table.Column<long>(nullable: true)
+                    EngineerDetailsId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,8 +96,8 @@ namespace DesignAnalysis.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FkProjectsEngineerDetailsEngineerDetailId",
-                        column: x => x.EngineerDetailId,
+                        name: "FK_Project_EngineerDetail",
+                        column: x => x.EngineerDetailsId,
                         principalTable: "EngineerDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -111,9 +110,10 @@ namespace DesignAnalysis.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IxProjectsEngineerDetailId",
+                name: "IX_Projects_EngineerDetailsId",
                 table: "Projects",
-                column: "EngineerDetailId");
+                column: "EngineerDetailsId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

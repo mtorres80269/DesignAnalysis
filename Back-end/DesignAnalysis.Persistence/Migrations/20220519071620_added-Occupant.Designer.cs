@@ -4,14 +4,16 @@ using DesignAnalysis.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DesignAnalysis.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519071620_added-Occupant")]
+    partial class addedOccupant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace DesignAnalysis.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Building");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.BuildingFacility", b =>
@@ -61,12 +63,12 @@ namespace DesignAnalysis.Persistence.Migrations
                         .HasName("PK_Building_Facility");
 
                     b.HasIndex("BuildingId")
-                        .HasName("IxBuildingFacilitiesBuildingId");
+                        .HasName("IxBuildingFacilityBuildingId");
 
                     b.HasIndex("FacilityId")
-                        .HasName("IxBuildingFacilitiesFacilityId");
+                        .HasName("IxBuildingFacilityFacilityId");
 
-                    b.ToTable("BuildingFacilities");
+                    b.ToTable("BuildingFacility");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.Company", b =>
@@ -258,7 +260,7 @@ namespace DesignAnalysis.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Facility");
 
-                    b.ToTable("Facilities");
+                    b.ToTable("Facility");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.Floor", b =>
@@ -278,7 +280,7 @@ namespace DesignAnalysis.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Floor");
 
-                    b.ToTable("Floors");
+                    b.ToTable("Floor");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.Occupant", b =>
@@ -315,42 +317,39 @@ namespace DesignAnalysis.Persistence.Migrations
                         .HasName("PK_Occupant");
 
                     b.HasIndex("BuildingId")
-                        .HasName("IxOccupantsBuildingId");
+                        .HasName("IxOccupantBuildingId");
 
                     b.HasIndex("FacilityId")
-                        .HasName("IxOccupantsFacilityId");
+                        .HasName("IxOccupantFacilityId");
 
                     b.HasIndex("FloorId")
-                        .HasName("IxOccupantsFloorId");
+                        .HasName("IxOccupantFloorId");
 
                     b.HasIndex("ProjectId")
-                        .HasName("IxOccupantsProjectId");
+                        .HasName("IxOccupantProjectId");
 
-                    b.ToTable("Occupants");
+                    b.ToTable("Occupant");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.Page", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Url")
-                        .HasColumnName("Url")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UrlName")
-                        .HasColumnName("UrlName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK_Page");
 
-                    b.ToTable("Pages");
+                    b.ToTable("Page");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.Project", b =>
@@ -407,17 +406,17 @@ namespace DesignAnalysis.Persistence.Migrations
                         .HasColumnName("ProjectName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectStageId")
-                        .HasColumnName("ProjectStageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectStatusId")
-                        .HasColumnName("ProjectStatusId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Revision")
                         .HasColumnName("Revision")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Stage")
+                        .HasColumnName("Stage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnName("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("SystemName")
                         .HasColumnName("SystemName")
@@ -443,181 +442,114 @@ namespace DesignAnalysis.Persistence.Migrations
 
                     b.HasIndex("EngineerDetailsId");
 
-                    b.HasIndex("ProjectStageId")
-                        .HasName("IxProjectsProjectStageId");
-
-                    b.HasIndex("ProjectStatusId")
-                        .HasName("IxProjectsProjectStatusId");
-
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("DesignAnalysis.Core.Entities.ProjectStage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ProjectStageName")
-                        .HasColumnName("ProjectStageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id")
-                        .HasName("PK_Project_Stage");
-
-                    b.ToTable("ProjectStages");
-                });
-
-            modelBuilder.Entity("DesignAnalysis.Core.Entities.ProjectStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ProjectStatusName")
-                        .HasColumnName("ProjectStatusName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id")
-                        .HasName("PK_Project_Status");
-
-                    b.ToTable("ProjectStatus");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK_Role");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.RolePage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("PageId")
-                        .HasColumnName("PageId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
-                        .HasColumnName("RoleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id")
                         .HasName("PK_Role_Page");
 
-                    b.HasIndex("PageId")
-                        .HasName("IxRolePagesPageId");
+                    b.HasIndex("PageId");
 
-                    b.HasIndex("RoleId")
-                        .HasName("IxRolePagesRoleId");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("RolePages");
+                    b.ToTable("RolePage");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("CreatedUnixTime")
-                        .HasColumnName("CreatedUnixTime")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Email")
-                        .HasColumnName("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnName("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnName("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnName("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .HasColumnName("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .HasColumnName("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("UpdatedUnixTime")
-                        .HasColumnName("UpdatedUnixTime")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id")
                         .HasName("PK_User");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.UserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("RoleId")
-                        .HasColumnName("RoleId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
-                        .HasColumnName("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id")
                         .HasName("PK_User_Role");
 
-                    b.HasIndex("RoleId")
-                        .HasName("IxUserRolesRoleId");
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId")
-                        .HasName("IxUserRolesUserId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("DesignAnalysis.Core.Entities.BuildingFacility", b =>
@@ -674,18 +606,6 @@ namespace DesignAnalysis.Persistence.Migrations
                         .WithMany("Projects")
                         .HasForeignKey("EngineerDetailsId")
                         .HasConstraintName("FK_Project_EngineerDetail")
-                        .IsRequired();
-
-                    b.HasOne("DesignAnalysis.Core.Entities.ProjectStage", "ProjectStage")
-                        .WithMany("Projects")
-                        .HasForeignKey("ProjectStageId")
-                        .HasConstraintName("FK_Project_ProjectStage")
-                        .IsRequired();
-
-                    b.HasOne("DesignAnalysis.Core.Entities.ProjectStatus", "ProjectStatus")
-                        .WithMany("Projects")
-                        .HasForeignKey("ProjectStatusId")
-                        .HasConstraintName("FK_Project_ProjectStatus")
                         .IsRequired();
                 });
 

@@ -10,13 +10,17 @@ namespace DesignAnalysis.Core.Entities
         public string ProjectName { get; set; }
         public string Location { get; set; }
         public string ClientName { get; set; }
-        public ProjectStatus Status { get; set; }
         public string Revision { get; set; }
-        public ProjectStage Stage { get; set; }
         public string SystemName { get; set; }
         public long CompanyId { get; set; }
         public long EngineerDetailsId { get; set; }
+        public int ProjectStageId { get; set; }
+        public int ProjectStatusId { get; set; }
         public Company Company { get; set; }
         public EngineerDetail EngineerDetail { get; set; }
+        public ICollection<Occupant> Occupants { get; set; }
+        public ProjectStage ProjectStage { get; set; }
+        public ProjectStatus ProjectStatus { get; set; }
+
     }
 }
